@@ -16,10 +16,10 @@ pipeline {
 			}}
 			stage('Docker build'){
 		    steps {
-			sh 'docker build -t kunalsh/imagepipe:latest  .'
+			sh 'docker build -t kunalsh/imagepipe .'
 			}}
 			stage('Container creation'){
 		    steps {
-			sh 'docker run -dit --name containerpipe kunalsh/imagepipe:latest /bin/bash'
+			sh 'docker run -dit --name containerpipe kunalsh/imagepipe /bin/bash'
 			}}	
 }}
