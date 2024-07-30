@@ -1,14 +1,18 @@
-# Use an official Java 8 image as the base
-FROM openjdk:8-jdk-alpine
 
-# Set the working directory to /app
-WORKDIR /app
+# Use an official CentOS 7 image as a base
+FROM centos:7
 
-# Copy the war file into the container
-COPY target/tabletennis.war /app/
+# Install HTTPD
+RUN yum install -y httpd
 
-# Expose the port that the application will run on
-EXPOSE 8080
+# Expose the port that HTTPD will use
+EXPOSE 80
 
-# Run the command to start the application when the container starts
-CMD ["java", "-jar", "tabletennis.war"]
+# Copy the default HTTPD configuration file
+COPY httpd.conf /etc/httpd/conf/httpd.conf
+
+# Copy the index.html file to the document root
+COPY index.html /var/www/html/
+
+# Run the command to start HTTPD when the container launches
+CMD ["httpd", "-D", "FOREGROUND"]
