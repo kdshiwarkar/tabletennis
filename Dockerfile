@@ -1,14 +1,21 @@
-# Use an official Apache Tomcat image as the base
-FROM tomcat:9.0
 
-# Set the working directory to /app
-WORKDIR /app
+# Use an Apache image as the base
+FROM httpd:alpine
 
-# Copy the .war file from the target directory
-COPY target/tabletennis.war /app/
+# Copy necessary tools and libraries
+COPY /home/kunalshiwarkar/Documents/Devops_software/tar/apache-maven-3.9.7 /opt/maven
+COPY /home/kunalshiwarkar/Documents/Devops_software/tar/apache-tomcat-9.0.89 /opt/tomcat
 
-# Expose the Tomcat port
+# Set environment variables
+ENV MAVEN_HOME /opt/maven
+ENV PATH $MAVEN_HOME/bin:$PATH
+ENV CATALINA_HOME /opt/tomcat
+
+# Copy war file to Tomcat webapps directory
+COPY target/tabletennis.war /opt/tomcat/webapps
+
+# Expose Tomcat port
 EXPOSE 8080
 
-# Run the command to start Tomcat when the container starts
-CMD ["catalina.sh", "run"]
+# Command to run Tomcat
+CMD ["/opt/tomcat/bin/catalina.sh", "run"]
