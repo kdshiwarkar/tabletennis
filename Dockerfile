@@ -1,22 +1,24 @@
+# Use Ubuntu as the base image
+FROM ubuntu:latest
 
-FROM docker.io/library/tomcat:9.0
-# Rest of your Dockerfile content
+# Update the package lists
+RUN apt-get update -qq && apt-get install -y \
+    openjdk-11-jdk \
+    maven \
+    tomcat9 \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
+# Set the working directory
+WORKDIR /app
 
-# Copy necessary tools and libraries
-COPY /home/kunalshiwarkar/Documents/Devops_software/tar/apache-maven-3.9.7 /opt/maven
-COPY /home/kunalshiwarkar/Documents/Devops_software/tar/apache-tomcat-9.0.89 /opt/tomcat
+# Copy the project files
+COPY target/tabletennis.war /app/
 
-# Set environment variables
-ENV MAVEN_HOME /opt/maven
-ENV PATH $MAVEN_HOME/bin:$PATH
-ENV CATALINA_HOME /opt/tomcat
-
-# Copy war file to Tomcat webapps directory
-COPY target/tabletennis.war /opt/tomcat/webapps
-
-# Expose Tomcat port
+# Expose the Tomcat port
 EXPOSE 8080
 
-# Command to run Tomcat
-CMD ["/opt/tomcat/bin/catalina.sh", "run"]
+# Command to run when the container starts
+CMD ["catalina.sh", "run"]
+
+
