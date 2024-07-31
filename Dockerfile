@@ -1,6 +1,7 @@
 
-# Use an Apache image as the base
-FROM httpd:alpine
+FROM docker.io/library/tomcat:9.0
+# Rest of your Dockerfile content
+
 
 # Copy necessary tools and libraries
 COPY /home/kunalshiwarkar/Documents/Devops_software/tar/apache-maven-3.9.7 /opt/maven
