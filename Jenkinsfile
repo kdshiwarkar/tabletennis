@@ -15,9 +15,10 @@ pipeline {
 			sh 'cp target/tabletennis.war /home/kunalshiwarkar/Documents/Devops_software/tar/apache-tomcat-9.0.89/webapps'
 			}}
 			stage('Docker build'){
-		    steps {
-			sh 'docker build -t kunalsh/imagepipe .'
-			}}
+    steps {
+        docker.build('kunalsh/imagepipe')
+    }
+}
 			stage('Container creation'){
 		    steps {
 			sh 'docker run -dit --name containerpipe kunalsh/imagepipe /bin/bash'
