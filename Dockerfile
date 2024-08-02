@@ -22,8 +22,8 @@ RUN rm -rf jdk-11.0.22_linux-x64_bin.tar.gz jdk-11.0.22
 RUN rm -rf apache-maven-3.9.8-bin.tar.gz apache-maven-3.9.8
 RUN rm -rf apache-tomcat-9.0.91.tar.gz apache-tomcat-9.0.91
 WORKDIR /
-ENV JAVA_HOME /opt/download/extract/java
-ENV M2_HOME /opt/download/extract/maven
+ENV JAVA_HOME=/opt/download/extract/java
+ENV M2_HOME=/opt/download/extract/maven
 ENV PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
 RUN mkdir /Script
 WORKDIR /Script
