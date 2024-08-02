@@ -1,7 +1,7 @@
 pipeline {
 	agent any
-stages {
-    stage('Checkout') {
+        stages {
+            stage('Checkout') {
         steps {
 		checkout scm			       
 	      }}
@@ -15,10 +15,11 @@ stages {
 		}}
 		stage('Docker build'){
 	    steps {
-		sh 'docker build -t kunalsh/imagepipe .'
+		sh 'docker build -t kunalsh/containerpipe .'
 		}}
 
 		stage('Container creation'){
 	    steps {
-		sh 'docker run -dit --name=containerpipe kunalsh/imagepipe /bin/bash'
-		}}	
+		sh 'docker run -dit --name=containerpipeline kunalsh/containerpipe /bin/bash'
+		}}
+	}}		
