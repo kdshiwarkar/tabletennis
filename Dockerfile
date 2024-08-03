@@ -9,17 +9,17 @@ RUN echo 'Acquire::http::Pipeline-Depth "10";' >> /etc/apt/apt.conf.d/99custom
 RUN apt-get update
 
 # Install dependencies
-RUN apt-get install -y --fix-missing curl vim openssh-server libgdbm-compat4t64 libgdbm6t64 git
-RUN sed -i 's/archive.ubuntu.com/mirrors.kernel.org/g' /etc/apt/sources.list
+RUN apt-get install -y --fix-missing curl vim libgdbm-compat4t64 libgdbm6t64 git
+RUN sed -i '/archive.ubuntu.com/mirrors.kernel.org/g' /etc/apt/sources.list
 
 # Create directories
 WORKDIR /opt/download
 RUN mkdir -p extract/java extract/maven extract/tomcat
 
 # Download files
-COPY apache-tomcat-9.0.91.tar.gz /opt/download/
-COPY apache-maven-3.9.8-bin.tar.gz /opt/download/
-COPY jdk-11.0.22_linux-x64_bin.tar.gz /opt/download/
+RUN curl -O https://downloads.apache.org/tomcat/tomcat-9/v9.0.91/bin/apache-tomcat-9.0.91.tar.gz
+RUN curl -O https://downloads.apache.org/maven/maven-3/3.9.8/binaries/apache-maven-3.9.8-bin.tar.gz
+RUN curl -O https://download.java.net/java/GA/jdk11/9/GPL/jdk-11.0.22_linux-x64_bin.tar.gz
 
 # Extract files
 RUN tar -zxf apache-tomcat-9.0.91.tar.gz -C extract/tomcat && \
@@ -39,9 +39,4 @@ ENV JAVA_HOME=/opt/download/extract/java
 ENV M2_HOME=/opt/download/extract/maven
 ENV PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
 
-# Create script directory and copy scripts
-WORKDIR /Script
-COPY create_mvn_folder.sh .
-COPY git_add.sh .
-RUN chmod 755 create_mvn_folder.sh
-RUN chmod 755 git_add.sh
+
