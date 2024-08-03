@@ -1,48 +1,35 @@
 FROM ubuntu:latest
 
-MAINTAINER "kdshiwarkar@gmail.com"
+LABEL maintainer="kdshiwarkar@gmail.com"
 
 # Increase Acquire::http::Pipeline-Depth to 10
 RUN echo 'Acquire::http::Pipeline-Depth "10";' >> /etc/apt/apt.conf.d/99custom
 
 # Install dependencies
-RUN apt-get update && apt-get -y upgrade
-RUN apt-get update --fix-missing
-RUN apt-get install -y curl
-RUN apt-get -y install vim
-RUN apt-get clean && apt-get autoclean
-RUN apt-get update --fix-missing
-RUN apt-get -y install openssh-server
-RUN apt-get update
-RUN apt-get clean && apt-get autoclean
-RUN apt-get install -y libgdbm-compat4t64 libgdbm6t64
-RUN apt-get install -y git
+RUN apt-get update && apt-get -y upgrade && \
+    apt-get install -y curl vim openssh-server libgdbm-compat4t64 libgdbm6t64 git
 
 # Create directories
-RUN mkdir -p /opt/download/extract
-RUN mkdir -p /opt/download/extract/java
-RUN mkdir -p /opt/download/extract/maven
-RUN mkdir -p /opt/download/extract/tomcat
+WORKDIR /opt/download
+RUN mkdir -p extract/java extract/maven extract/tomcat
 
-# Download files directly into /opt/download/
-RUN curl -o /opt/download/apache-tomcat-9.0.91.tar.gz -L https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.91/bin/apache-tomcat-9.0.91.tar.gz
-RUN curl -o /opt/download/apache-maven-3.9.8-bin.tar.gz -L https://dlcdn.apache.org/maven/maven-3/3.9.8/binaries/apache-maven-3.9.8-bin.tar.gz
-RUN curl -o /opt/download/jdk-11.0.22_linux-x64_bin.tar.gz -L https://www.oracle.com/webapps/redirect/signon?nexturl=https://download.oracle.com/otn/java/jdk/11.0.22%2B7/9bd8d305c900ee4fa3e613b59e6f42de/jdk-11.0.22_linux-x64_bin.tar.gz
+# Download files
+COPY apache-tomcat-9.0.91.tar.gz /opt/download/
+COPY apache-maven-3.9.8-bin.tar.gz /opt/download/
+COPY jdk-11.0.22_linux-x64_bin.tar.gz /opt/download/
 
 # Extract files
-RUN tar -zxf /opt/download/apache-tomcat-9.0.91.tar.gz -C /opt/download/extract/tomcat
-RUN tar -zxf /opt/download/apache-maven-3.9.8-bin.tar.gz -C /opt/download/extract/maven
-RUN tar -zxf /opt/download/jdk-11.0.22_linux-x64_bin.tar.gz -C /opt/download/extract/java
+RUN tar -zxf apache-tomcat-9.0.91.tar.gz -C extract/tomcat && \
+    tar -zxf apache-maven-3.9.8-bin.tar.gz -C extract/maven && \
+    tar -zxf jdk-11.0.22_linux-x64_bin.tar.gz -C extract/java
 
 # Move extracted files to correct directories
-RUN mv -f apache-tomcat-9.0.91.tar.gz/* /opt/download/extract/tomcat
-RUN mv -f apache-maven-3.9.8/* /opt/download/extract/maven
-RUN mv -f jdk-11.0.22/* /opt/download/java
+RUN mv -f extract/tomcat/apache-tomcat-9.0.91/* extract/tomcat/ && \
+    mv -f extract/maven/apache-maven-3.9.8/* extract/maven/ && \
+    mv -f extract/java/jdk-11.0.22/* extract/java/
 
 # Remove unnecessary files
-RUN rm -rf jdk-11.0.22_linux-x64_bin.tar.gz jdk-11.0.22
-RUN rm -rf apache-maven-3.9.8-bin.tar.gz apache-maven-3.9.8
-RUN rm -rf apache-tomcat-9.0.91.tar.gz apache-tomcat-9.0.91
+RUN rm -rf apache-tomcat-9.0.91.tar.gz apache-maven-3.9.8-bin.tar.gz jdk-11.0.22_linux-x64_bin.tar.gz
 
 # Set environment variables
 ENV JAVA_HOME=/opt/download/extract/java
@@ -50,12 +37,8 @@ ENV M2_HOME=/opt/download/extract/maven
 ENV PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
 
 # Create script directory and copy scripts
-RUN mkdir /Script
 WORKDIR /Script
 COPY create_mvn_folder.sh .
-ADD git_add.sh .
+COPY git_add.sh .
 RUN chmod 755 create_mvn_folder.sh
 RUN chmod 755 git_add.sh
-
-# Set working directory to /
-WORKDIR /
