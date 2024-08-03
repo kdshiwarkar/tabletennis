@@ -6,7 +6,8 @@ RUN apt-get clean && apt-get autoclean
 RUN apt-get -y install openssh-server
 RUN apt-get update
 RUN apt-get clean && apt-get autoclean
-RUN apt-get install -y --fix-missing git
+RUN apt-get install -y libgdbm-compat4t64 libgdbm6t64
+RUN apt-get install -y git
 RUN mkdir -p /opt/download/extract
 RUN mkdir -p /opt/download/extract/java
 RUN mkdir -p /opt/download/extract/maven
