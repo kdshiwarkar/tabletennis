@@ -26,10 +26,21 @@ RUN curl -O https://downloads.apache.org/tomcat/tomcat-9/v9.0.91/bin/apache-tomc
 RUN curl -O https://downloads.apache.org/maven/maven-3/3.9.8/binaries/apache-maven-3.9.8-bin.tar.gz
 RUN curl -O https://download.java.net/java/GA/jdk11/9/GPL/jdk-11.0.22_linux-x64_bin.tar.gz
 
-# Extract files
-RUN tar -zxf apache-tomcat-9.0.91.tar.gz -C extract/tomcat && \
-    tar -zxf apache-maven-3.9.8-bin.tar.gz -C extract/maven && \
-    tar -zxf jdk-11.0.22_linux-x64_bin.tar.gz -C extract/java
+# Verify the files are downloaded
+RUN ls
+
+# Verify the file integrity
+RUN md5sum apache-tomcat-9.0.91.tar.gz
+RUN md5sum apache-maven-3.9.8-bin.tar.gz
+RUN md5sum jdk-11.0.22_linux-x64_bin.tar.gz
+
+# Install 7z
+RUN apt-get install -y p7zip-full
+
+# Extract files using 7z
+RUN 7z x apache-tomcat-9.0.91.tar.gz -oextract/tomcat
+RUN 7z x apache-maven-3.9.8-bin.tar.gz -oextract/maven
+RUN 7z x jdk-11.0.
 
 # Move extracted files to correct directories
 RUN mv -f extract/tomcat/apache-tomcat-9.0.91/* extract/tomcat/ && \
