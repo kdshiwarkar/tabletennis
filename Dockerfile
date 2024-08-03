@@ -5,9 +5,11 @@ LABEL maintainer="kdshiwarkar@gmail.com"
 # Increase Acquire::http::Pipeline-Depth to 10
 RUN echo 'Acquire::http::Pipeline-Depth "10";' >> /etc/apt/apt.conf.d/99custom
 
+# Update package repository
+RUN apt-get update
+
 # Install dependencies
-RUN apt-get update && apt-get -y upgrade && \
-    apt-get install -y curl vim openssh-server libgdbm-compat4t64 libgdbm6t64 git
+RUN apt-get install -y --fix-missing curl vim openssh-server libgdbm-compat4t64 libgdbm6t64 git
 
 # Create directories
 WORKDIR /opt/download
