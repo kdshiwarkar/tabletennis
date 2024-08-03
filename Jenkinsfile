@@ -15,7 +15,7 @@ pipeline {
 		}}
 		stage('Docker build'){
 	    steps {
-		sh 'docker build -t kunalsh/containerpipe .'
+		sh 'docker build --no-cache -t kunalsh/containerpipe .'
 		}}
 
 		stage('Container creation'){
