@@ -17,18 +17,24 @@ RUN curl -O https://downloads.apache.org/tomcat/tomcat-9/v9.0.91/bin/apache-tomc
     && curl -O https://downloads.apache.org/maven/maven-3/3.9.8/binaries/apache-maven-3.9.8-bin.zip \
     && curl -O https://download.java.net/java/GA/jdk11/9/GPL/jdk-11.0.22_linux-x64_bin.zip
 
+# Check if the files are downloaded correctly
+RUN if [ ! -f apache-tomcat-9.0.91.zip ]; then echo "Error: Unable to download apache-tomcat-9.0.91.zip"; exit 1; fi \
+    && if [ ! -f apache-maven-3.9.8-bin.zip ]; then echo "Error: Unable to download apache-maven-3.9.8-bin.zip"; exit 1; fi \
+    && if [ ! -f jdk-11.0.22_linux-x64_bin.zip ]; then echo "Error: Unable to download jdk-11.0.22_linux-x64_bin.zip"; exit 1; fi
+
 # Extract files
-RUN unzip apache-tomcat-9.0.91.zip -d extract/tomcat \
-    && unzip apache-maven-3.9.8-bin.zip -d extract/maven \
-    && unzip jdk-11.0.22_linux-x64_bin.zip -d extract/java
+RUN unzip apache-tomcat-9.0.91.zip -d extract/tomcat || true \
+    && unzip apache-maven-3.9.8-bin.zip -d extract/maven || true \
+    && unzip jdk-11.0.22_linux-x64_bin.zip -d extract/java || true
+
+# Check if the extraction was successful
+RUN if [ ! -d extract/tomcat ]; then echo "Error: Unable to extract apache-tomcat-9.0.91.zip"; exit 1; fi \
+    && if [ ! -d extract/maven ]; then echo "Error: Unable to extract apache-maven-3.9.8-bin.zip"; exit 1; fi \
+    && if [ ! -d extract/java ]; then echo "Error: Unable to extract jdk-11.0.22_linux-x64_bin.zip"; exit 1; fi
 
 # Move extracted files to correct directories
 RUN mv -f extract/tomcat/apache-tomcat-9.0.91/* extract/tomcat/ && \
-    mv -f extract/maven/apache-maven-3.9.8/* extract/maven/ && \
-    mv -f extract/java/jdk-11.0.22/* extract/java/
-
-# Remove unnecessary files
-RUN rm -rf apache-tomcat-9.0.91.zip apache-maven-3.9.8-bin.zip jdk-11.0.22_linux-x64_bin.zip
+    mv -f extract/maven/apache-maven-3.9.8/* extract/maven/
 
 # Set environment variables
 ENV JAVA_HOME=/opt/download/extract/java
