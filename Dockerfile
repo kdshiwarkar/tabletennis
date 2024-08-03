@@ -5,12 +5,17 @@ LABEL maintainer="kdshiwarkar@gmail.com"
 # Increase Acquire::http::Pipeline-Depth to 10
 RUN echo 'Acquire::http::Pipeline-Depth "10";' >> /etc/apt/apt.conf.d/99custom
 
+# Replace the default mirror with a different one
+RUN sed -i 's/archive.ubuntu.com/mirrors.kernel.org/g' /etc/apt/sources.list
+
 # Update package repository
 RUN apt-get update
 
+# Clean up apt cache
+RUN apt-get clean && apt-get autoclean
+
 # Install dependencies
-RUN apt-get install -y --fix-missing curl vim libgdbm-compat4t64 libgdbm6t64 git
-RUN sed -i '/archive.ubuntu.com/mirrors.kernel.org/g' /etc/apt/sources.list
+RUN apt-get install -y --fix-missing curl vim git
 
 # Create directories
 WORKDIR /opt/download
@@ -38,5 +43,3 @@ RUN rm -rf apache-tomcat-9.0.91.tar.gz apache-maven-3.9.8-bin.tar.gz jdk-11.0.22
 ENV JAVA_HOME=/opt/download/extract/java
 ENV M2_HOME=/opt/download/extract/maven
 ENV PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
-
-
