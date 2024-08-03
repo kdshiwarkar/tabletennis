@@ -10,7 +10,9 @@ RUN apt-get update
 
 # Install dependencies
 RUN apt-get install -y --fix-missing curl vim git
-RUN sed -i '/archive.ubuntu.com/mirrors.kernel.org/g' /etc/apt/sources.list
+
+# Replace archive.ubuntu.com with mirrors.kernel.org in sources.list
+RUN sed -i 's/archive.ubuntu.com/mirrors.kernel.org/g' /etc/apt/sources.list
 
 # Create directories
 WORKDIR /opt/download
@@ -22,8 +24,7 @@ RUN curl -O https://downloads.apache.org/tomcat/tomcat-9/v9.0.91/bin/apache-tomc
     && curl -O https://download.java.net/java/GA/jdk11/9/GPL/jdk-11.0.22_linux-x64_bin.tar.gz
 
 # Extract files
-RUN sha256sum apache-tomcat-9.0.91.tar.gz apache-maven-3.9.8-bin.tar.gz jdk-11.0.22_linux-x64_bin.tar.gz \
-    && tar -xf apache-tomcat-9.0.91.tar.gz -C extract/tomcat \
+RUN tar -xf apache-tomcat-9.0.91.tar.gz -C extract/tomcat \
     && tar -xf apache-maven-3.9.8-bin.tar.gz -C extract/maven \
     && tar -xf jdk-11.0.22_linux-x64_bin.tar.gz -C extract/java
 
