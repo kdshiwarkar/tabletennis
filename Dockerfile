@@ -3,7 +3,6 @@ FROM ubuntu:latest
 MAINTAINER "kdshiwarkar@gmail.com"
 
 # Install dependencies
-RUN apt-get update && apt-get -y install curl
 RUN apt-get update && apt-get -y upgrade
 RUN apt-get -y install vim
 RUN apt-get clean && apt-get autoclean
