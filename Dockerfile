@@ -2,17 +2,14 @@ FROM ubuntu:latest
 
 LABEL maintainer="kdshiwarkar@gmail.com"
 
-# Increase Acquire::http::Pipeline-Depth to 10
-RUN echo 'Acquire::http::Pipeline-Depth "10";' >> /etc/apt/apt.conf.d/99custom
+# Use a mirror repository
+RUN sed -i 's/archive.ubuntu.com/mirrors.kernel.org/g' /etc/apt/sources.list
 
-# Update package repository
-RUN apt-get update
+# Update package repository and clean package cache
+RUN apt-get update && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install dependencies
 RUN apt-get install -y --fix-missing curl vim git unzip
-
-# Replace archive.ubuntu.com with mirrors.kernel.org in sources.list
-RUN sed -i 's/archive.ubuntu.com/mirrors.kernel.org/g' /etc/apt/sources.list
 
 # Create directories
 WORKDIR /opt/download
