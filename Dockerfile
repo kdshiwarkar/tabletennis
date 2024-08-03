@@ -8,6 +8,7 @@ RUN apt-get update --fix-missing
 RUN apt-get install -y curl
 RUN apt-get -y install vim
 RUN apt-get clean && apt-get autoclean
+RUN apt-get update --fix-missing
 RUN apt-get -y install openssh-server
 RUN apt-get update
 RUN apt-get clean && apt-get autoclean
