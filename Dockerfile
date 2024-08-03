@@ -10,6 +10,7 @@ RUN apt-get update
 
 # Install dependencies
 RUN apt-get install -y --fix-missing curl vim openssh-server libgdbm-compat4t64 libgdbm6t64 git
+RUN sed -i 's/archive.ubuntu.com/mirrors.kernel.org/g' /etc/apt/sources.list
 
 # Create directories
 WORKDIR /opt/download
