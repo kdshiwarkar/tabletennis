@@ -2,6 +2,9 @@ FROM ubuntu:latest
 
 MAINTAINER "kdshiwarkar@gmail.com"
 
+# Increase Acquire::http::Pipeline-Depth to 10
+RUN echo 'Acquire::http::Pipeline-Depth "10";' >> /etc/apt/apt.conf.d/99custom
+
 # Install dependencies
 RUN apt-get update && apt-get -y upgrade
 RUN apt-get update --fix-missing
