@@ -3,6 +3,7 @@ FROM ubuntu:latest
 MAINTAINER "kdshiwarkar@gmail.com"
 
 # Install dependencies
+RUN apt-get update && apt-get -y curl
 RUN apt-get update && apt-get -y upgrade
 RUN apt-get -y install vim
 RUN apt-get clean && apt-get autoclean
@@ -39,8 +40,8 @@ RUN rm -rf apache-maven-3.9.8-bin.tar.gz apache-maven-3.9.8
 RUN rm -rf apache-tomcat-9.0.91.tar.gz apache-tomcat-9.0.91
 
 # Set environment variables
-ENV JAVA_HOME=/opt/download/extract/java/jdk-11.0.22
-ENV M2_HOME=/opt/download/extract/maven/apache-maven-3.9.8
+ENV JAVA_HOME=/opt/download/extract/java
+ENV M2_HOME=/opt/download/extract/maven
 ENV PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
 
 # Create script directory and copy scripts
