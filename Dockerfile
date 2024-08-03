@@ -4,6 +4,7 @@ MAINTAINER "kdshiwarkar@gmail.com"
 
 # Install dependencies
 RUN apt-get update && apt-get -y upgrade
+RUN apt-get update --fix-missing
 RUN apt-get install -y curl
 RUN apt-get -y install vim
 RUN apt-get clean && apt-get autoclean
