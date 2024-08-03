@@ -4,7 +4,7 @@ RUN apt-get update && apt-get -y upgrade
 RUN apt-get -y install vim
 RUN apt-get clean && apt-get autoclean
 RUN apt-get -y install openssh-server
-RUN apt-get install git
+RUN apt-get -y install git
 RUN mkdir -p /opt/download/extract
 RUN mkdir -p /opt/download/extract/java
 RUN mkdir -p /opt/download/extract/maven
