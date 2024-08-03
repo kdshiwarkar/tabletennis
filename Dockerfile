@@ -18,16 +18,15 @@ RUN mkdir -p /opt/download/extract/java
 RUN mkdir -p /opt/download/extract/maven
 RUN mkdir -p /opt/download/extract/tomcat
 
-# Download and extract Tomcat, Maven, and Java
-WORKDIR /opt/download/
-RUN wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.91/bin/apache-tomcat-9.0.91.tar.gz
-RUN wget https://dlcdn.apache.org/maven/maven-3/3.9.8/binaries/apache-maven-3.9.8-bin.tar.gz
-RUN wget https://www.oracle.com/webapps/redirect/signon?nexturl=https://download.oracle.com/otn/java/jdk/11.0.22%2B7/9bd8d305c900ee4fa3e613b59e6f42de/jdk-11.0.22_linux-x64_bin.tar.gz
-ADD apache-tomcat-9.0.91.tar.gz /opt/download/
-ADD apache-maven-3.9.8-bin.tar.gz /opt/download/
-RUN tar -zxf apache-tomcat-9.0.91.tar.gz
-RUN tar -zxf apache-maven-3.9.8-bin.tar.gz
-RUN tar -zxf jdk-11.0.22_linux-x64_bin.tar.gz
+# Download files directly into /opt/download/
+RUN wget -O /opt/download/apache-tomcat-9.0.91.tar.gz https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.91/bin/apache-tomcat-9.0.91.tar.gz
+RUN wget -O /opt/download/apache-maven-3.9.8-bin.tar.gz https://dlcdn.apache.org/maven/maven-3/3.9.8/binaries/apache-maven-3.9.8-bin.tar.gz
+RUN wget -O /opt/download/jdk-11.0.22_linux-x64_bin.tar.gz https://www.oracle.com/webapps/redirect/signon?nexturl=https://download.oracle.com/otn/java/jdk/11.0.22%2B7/9bd8d305c900ee4fa3e613b59e6f42de/jdk-11.0.22_linux-x64_bin.tar.gz
+
+# Extract files
+RUN tar -zxf /opt/download/apache-tomcat-9.0.91.tar.gz -C /opt/download/extract/tomcat
+RUN tar -zxf /opt/download/apache-maven-3.9.8-bin.tar.gz -C /opt/download/extract/maven
+RUN tar -zxf /opt/download/jdk-11.0.22_linux-x64_bin.tar.gz -C /opt/download/extract/java
 
 # Move extracted files to correct directories
 RUN mv -f apache-tomcat-9.0.91.tar.gz/* /opt/download/extract/tomcat
