@@ -27,18 +27,11 @@ pipeline {
                 sh 'docker run -it -d --name=container2404 kunalsh/kunal_container /bin/bash'
             }
         }
-        stage('Login to Docker') {
+        stage('Build and Deploy') {
             steps {
-                // Login to Docker using credentials from Jenkins credentials store
-                withCredentials([usernamePassword(credentialsId: 'docker-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                    sh 'docker login -u ${kunalsh} -p ${Kunnu@2404}'
-                }
+                sh 'docker exec -it container2404 /opt/download/apache-maven-3.9.8/bin/mvn install'
+                sh 'docker exec -it container2404 cp target/tabletennis.war /opt/download/apache-tomcat-9.0.91/webapps'
             }
         }
-        stage('Push Docker Image') {
-            steps {
-                sh 'docker push ${kunalsh}/kunal_container'
-            }
-        }
-    }
+                 }
 }
