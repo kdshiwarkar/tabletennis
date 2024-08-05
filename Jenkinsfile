@@ -20,7 +20,7 @@ pipeline {
         stage('docker build') {
             steps {
                 dir('docker') {
-                    sh 'docker build -t kunalsh/kunal_container .'
+                    sh 'docker build -t kunalsh/kunal_container -f ../Dockerfile .'
                 }
             }
         }
@@ -29,20 +29,4 @@ pipeline {
                 sh 'docker run -it -d --name=container2404 kunalsh/kunal_container /bin/bash'
             }
         }
-                stage('copy .jenkins file') {
-            steps {
-                sh 'docker cp /home/kunalshiwarkar/Documents/Devops_software/tar/apache-tomcat-9.0.89/webapps/jenkins container2404:/opt/download/apache-tomcat-9.0.91/webapps'
-            }
-        } 
-         stage('copy jenkins.war file') {
-            steps {
-                sh 'docker cp /home/kunalshiwarkar/Documents/Devops_software/tar/apache-tomcat-9.0.89/webapps/jenkins.war container2404:/opt/download/apache-tomcat-9.0.91/webapps'
-            }
-        }
-        stage('copy war file') {
-            steps {
-                sh 'docker cp /home/kunalshiwarkar/.jenkins/workspace/tabletennis/target/tabletennis.war container2404:/opt/download/apache-tomcat-9.0.91/webapps'
-            }
-        }
-    }
-}
+          }}
