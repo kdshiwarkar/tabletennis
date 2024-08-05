@@ -31,6 +31,9 @@ RUN echo JAVA_HOME /opt/download/jdk-22.0.2 > .bashrc
 ENV M2_HOME /opt/download/apache-maven-3.9.8
 ENV PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
 
+#ADD war file
+ADD /home/kunalshiwarkar/.jenkins/workspace/tabletennis/src/target/tabletennis.war /opt/download/apache-tomcat-9.0.91/webapps/
+
 # Start Tomcat on container startup
 CMD ["/opt/download/apache-tomcat-9.0.91/bin/startup.sh"]
 
