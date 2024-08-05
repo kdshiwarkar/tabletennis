@@ -19,7 +19,9 @@ pipeline {
         }
         stage('docker build') {
             steps {
-                sh 'docker build -t kunalsh/kunal_container .'
+                dir('docker') {
+                    sh 'docker build -t kunalsh/kunal_container .'
+                }
             }
         }
         stage('Container creation') {
@@ -33,5 +35,5 @@ pipeline {
                 sh 'docker exec -it container2404 cp target/tabletennis.war /opt/download/apache-tomcat-9.0.91/webapps'
             }
         }
-                 }
+    }
 }
