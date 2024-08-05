@@ -19,7 +19,7 @@ pipeline {
         }
         stage('docker build') {
             steps {
-                sh 'docker build -t kunalsh/kunal_container .'
+                sh 'docker build --no-cache -t kunalsh/kunal_container .'
             }
         }
         stage('Container creation') {
