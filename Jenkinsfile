@@ -20,7 +20,7 @@ pipeline {
         stage('docker build') {
             steps {
                 dir('docker') {
-                    sh 'docker build -t kunalsh/kunal_container -f ../Dockerfile .'
+                    sh 'docker build -t kunalsh/kunal_container .'
                 }
             }
         }
