@@ -33,9 +33,9 @@ ENV PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
 
 # Copy environment variables into .bashrc
 RUN <<EOF
-  echo "export JAVA_HOME=$JAVA_HOME" >> /root/.bashrc
-  echo "export M2_HOME=$M2_HOME" >> /root/.bashrc
-  echo "export PATH=$PATH" >> /root/.bashrc
+  echo "export JAVA_HOME=$JAVA_HOME" >> /opt/download/.bashrc
+  echo "export M2_HOME=$M2_HOME" >> /opt/download/.bashrc
+  echo "export PATH=$PATH" >> /opt/download/.bashrc
 EOF
 
 # Start Tomcat on container startup
