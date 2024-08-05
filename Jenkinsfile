@@ -29,10 +29,9 @@ pipeline {
                 sh 'docker run -it -d --name=container2404 kunalsh/kunal_container /bin/bash'
             }
         }
-        stage('Build and Deploy project') {
+        stage('copy') {
             steps {
-                sh 'docker exec -it container2404 /opt/download/apache-maven-3.9.8/bin/mvn install'
-                sh 'docker exec -it container2404 cp target/tabletennis.war /opt/download/apache-tomcat-9.0.91/webapps'
+                sh 'docker cp /home/kunalshiwarkar/.jenkins/workspace/tabletennis/target/tabletennis.war container2404:/opt/download/apache-tomcat-9.0.91/webapps'
             }
         }
     }
