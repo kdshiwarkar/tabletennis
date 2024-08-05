@@ -31,16 +31,12 @@ ENV JAVA_HOME /opt/download/jdk-22.0.2
 ENV M2_HOME /opt/download/apache-maven-3.9.8
 ENV PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
 
-#environment variables into .bashrc
-RUN echo "export JAVA_HOME=$JAVA_HOME" >> /root/.bashrc
-RUN echo "export M2_HOME=$M2_HOME" >> /root/.bashrc
-RUN echo "export PATH=$PATH" >> /root/.bashrc
-
-#give permission 
-RUN chmod 777 /opt/download/jdk-22.0.2
-RUN chmod 777 /opt/download/apache-tomcat-9.0.91/webapps/
-
-
+# Copy environment variables into .bashrc
+RUN <<EOF
+  echo "export JAVA_HOME=$JAVA_HOME" >> /root/.bashrc
+  echo "export M2_HOME=$M2_HOME" >> /root/.bashrc
+  echo "export PATH=$PATH" >> /root/.bashrc
+EOF
 
 # Start Tomcat on container startup
 CMD ["/opt/download/apache-tomcat-9.0.91/bin/startup.sh"]
